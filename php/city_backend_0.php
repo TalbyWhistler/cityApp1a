@@ -18,10 +18,19 @@
             case("fetchCitiesData"):
                 {
                     $functionParams=$jsonInput["params"];
-                    $testParam=$functionParams["testParam"];
-                    $outputMessage='fetchCitiesData control has fired with '.$testParam;
+                    //$testParam=$functionParams["testParam"];
+                    //$outputMessage='fetchCitiesData control has fired with '.$testParam;
                     $outputMessage=fetchCitiesInfo();
 
+                    break;
+                }
+            case("submitCitiesData"):
+                {
+                    $functionParams=$jsonInput["params"];
+                    $city=$functionParams["city"];
+                    $coOrds=$functionParams["coOrds"];
+                    $outputMessage='submitCities control has fired with data '.$city.' '.$coOrds;
+                    $outputMessage=submitCityInfo($city,$coOrds);
                     break;
                 }
           

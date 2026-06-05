@@ -44,7 +44,7 @@ function printCitiesInfo(data)
         `
             <tr>
                 <td>${data[i]["city"]}</td>
-                <td>${data[i]["coordinates"]}</td>
+                <td>${data[i]["coordinates"].toUpperCase()}</td>
             </tr>
         `;
     };
@@ -96,6 +96,37 @@ function isNumber(input)
     return true;
 }
 
+function validateCityInput(city)
+{
+    if (city.length==0)
+    {
+        return false;
+    }
+    if (!isAlpha(city))
+    {
+        return false;
+    }
+    return true;
+}
+
+function validateCoordsInput(coOrds)
+{
+    if (coOrds.length==0)
+    {
+        return false;
+    }
+    let inputCoOrds=coOrds.replace(' ','');
+    if (!isNumber(inputCoOrds[0] || !isNumber(inputCoOrds[1]) || !isNumber(inputCoOrds[3]) || !isNumber(inputCoOrds[4])))
+    {
+        return false;
+    }
+    if (!isAlpha(inputCoOrds[2]) || !isAlpha(inputCoOrds[5]))
+    {
+        return false;
+    }
+    return true;
+}
+
 function testPrint(data)
 {
     console.log(data);
@@ -114,6 +145,34 @@ function fetchCitiesData()
 function handleCitySubmit()
 {
     console.log('js city submit button');
+    let statusOutput=document.getElementById("cityStatusIndicator");
+    let cityInput=document.getElementById("cityCityInput").value.toLowerCase().trim();
+    let coOrdsInput=document.getElementById("coordsCityInput").value.toLowerCase().trim();
+    if (validateCityInput(cityInput) && validateCoordsInput(coOrdsInput))
+    {
+        statusOutput.innerHTML='Input accepted'
+        cityInput.value='';
+        coOrdsInput.value='';
+        console.log('ready to submit:'+cityInput+' '+coOrdsInput);
+        let functionName='submitCitiesData';
+        let params={city:cityInput,coOrds:coOrdsInput};
+        citiesCallBackend(functionName,params,submitCallback);
+        document.getElementById("cityCityInput").value='';
+        document.getElementById("coordsCityInput").value='';
+         document.getElementById("cityCityInput").focus();
+        
+    }
+    else 
+    {
+        statusOutput.innerHTML='Invalid input'
+    }
+}
+
+function submitCallback(data)
+{
+    let statusOutput=document.getElementById("cityStatusIndicator");
+    statusOutput.innerHTML=data;
+    fetchCitiesData();
 }
 
 function cityInit()

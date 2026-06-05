@@ -22,4 +22,24 @@ function fetchCitiesInfo()
             }
 }
 
+
+
+function submitCityInfo($city,$coordinates)
+{
+    include 'item_db_connect.php';
+    $stmt=$conn->prepare("delete from cities where city=?");
+    $stmt->bind_param("s",$city);
+    $stmt->execute();
+    $stmt=$conn->prepare("insert into cities values(?,?)");
+    $stmt->bind_param("ss",$city,$coordinates);
+    if ($stmt->execute())
+        {
+            return "Record Updated";
+        }
+        else 
+            {
+                return "Error updating record.";
+            }
+}
+
 ?>
