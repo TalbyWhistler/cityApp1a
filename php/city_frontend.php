@@ -1,62 +1,85 @@
-<?php        
-    $cityPageId="cityPage";
-    $panelClass="cityInputPanel";
-    $panelInputsClass="cityPanelInputs";
-    $titleClass="cityTitle";
+<?php  
+
+function createElement($element,$id,$class,$inner)
+    {
+        $elementString='';
+        $elementString=$elementString.'<'.$element.' id="'.$id.'" class="'.$class.'"';
+        $elementString=$elementString.'>';
+        $elementString=$elementString.$inner;
+        $elementString=$elementString.'</'.$element.'>';
+        return $elementString;
+    }
+
+function createInput($id,$class)
+    {
+        $elementString='';
+        $elementString=$elementString.'<input id="'.$id.'" class="'.$class.'"';
+        $elementString=$elementString.'/>';
+       // $elementString=$elementString.$inner;
+    //    $elementString=$elementString.'</'.$element.'>';
+        return $elementString;
+    }
+
+function createButton($id,$class,$function,$inner)
+    {
+        $elementString='';
+        $elementString=$elementString
+            .'<button id='.$id.' class='.$class.' onclick="'.$function.'()">'
+            .$inner 
+            .'</button>';
+        return $elementString;
+    }
+
+function citiesPage() 
+{
+    $br='</br>';
+    $titleBox=createElement('h1',"cityTitle","cityTitle",'Cities');
+    $cityLabel=createElement('label','cityCityInputLabel','inputLabel','City:');
+    
+    $cityInputBox=createInput("cityCityInput","cityPanelInputs");
+    
+    $cityInput=''
+        .$cityLabel 
+        .$br 
+        .$cityInputBox;
    
-    $submitButtonId="citySubmitButton";
+    $coOrdsLabel=createElement('label','citiesCoOrdsLabel','inputLabel','CoOrdinates:');
+    $coOrdsInputBox=createInput('coordsCityInput','cityInputPanel');
+    $submitButton=createButton("citySubmitButton","submitButton",'handleCitySubmit',"Submit");
+    $coOrdsInput=''
+        .$br 
+        .$coOrdsLabel 
+        .$coOrdsInputBox;
     
-    // components
-    $titleBox=
-    '
-        <h1 class='.$titleClass.'>Cities</h1>
-    ';
-    $cityInput=
-    '
-        <label for="cityCityInput">City:</label>
-        </br>
-        <input class='.$panelInputsClass.'name="cityCityInput" id="cityCityInput">
-    ';
-
-    $coOrdsInput=
-    '
-        </br>
-        <label for="coordsCityInput">CoOrdinates:</label>
-        </br>
-        <input class='.$panelInputsClass.'name="coordsCityInput" id="coordsCityInput">
-    ';
+    $statusIndicator=createElement('div',"cityStatusIndicatorBox","statusIndicatorBox",createElement('p',"cityStatusIndicator","statusIndicator","Ready"));
+    $inputBoxContents=''
+        .$cityInput
+        .$coOrdsInput 
+        .$br 
+        .$submitButton 
+        .$statusIndicator;
+   
+    $inputBox=createElement("div","cityInputBox","inputBox",$inputBoxContents);
     
-    $citySubmitButton=
-    '
-        </br>
-        <button onclick="handleCitySubmit()" id='.$submitButtonId.'>Submit</button>   
-    ';
-    $statusIndicator='<div id="cityStatusIndicatorBox"><p id="cityStatusIndicator">Ready</p></div>';
-    $inputBox=
-    '
-        <div id="cityInputBox" class='.$panelClass.'>
-        '.$cityInput.$coOrdsInput.$citySubmitButton.$statusIndicator.'
-        </div>
-    ';
+    $middleBand=createElement('div',"cityMiddleBand","middleBand",'');
     
-    $middleBand='
-        <div id="cityMiddleBand">
-            '.'
-        </div>';
-    $infoOutputArea='<div id="cityInfoOutputArea"></div>';
+    $infoOutputArea=createElement('div','cityInfoOutputArea','infoOutputArea','');
     $scriptLink='<script src="js/cityScripts.js"></script>';
+    
+    $pageOutputContents='' 
+        .$titleBox 
+        .$inputBox 
+        .$scriptLink 
+        .$middleBand 
+        .$infoOutputArea;
 
-    $fullOutput='<div id='.$cityPageId.'>'.
-        $titleBox
-        .$inputBox
-        //.$scriptTestButton 
-        .$scriptLink
-        .$middleBand
-        .$infoOutputArea.'</div>';
+    $pageOutput=createElement('div','cityPage','pageOutput',$pageOutputContents);
+
+    return $pageOutput;
+}
+    
 
  
     
-    echo
-         
-        $fullOutput;
+    echo citiesPage();
 ?>
